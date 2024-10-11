@@ -2,7 +2,7 @@ package com.webcrawler;
 
 public class Main {
     public static void main(String[] args) {
-        tuoitrethudo crawler = new tuoitrethudo();
-        crawler.fetchScores();
+        Tuoitrethudo crawler = new Tuoitrethudo("score");
+        crawler.fetchScores(37000001, 1000);
     }
 }

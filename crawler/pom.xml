@@ -2,16 +2,18 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
+<!-- định danh nhóm của dự án -->
   <groupId>com.webcrawler</groupId>
+  <!-- định danh dự án trong nhóm -->
   <artifactId>crawler</artifactId>
+  <!-- phiên bản của dự án -->
   <version>1.0-SNAPSHOT</version>
 
   <name>crawler</name>
-  <url>http://www.example.com</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.release>17</maven.compiler.release>
+    <maven.compiler.release>20</maven.compiler.release>
   </properties>
 
   <dependencies>
@@ -42,6 +44,11 @@
       <artifactId>junit-jupiter-api</artifactId>
       <version>5.8.1</version>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+        <groupId>org.apache.kafka</groupId>
+        <artifactId>kafka-clients</artifactId>
+        <version>2.8.0</version>
     </dependency>
     <!-- Optionally: parameterized tests support -->
     <dependency>
