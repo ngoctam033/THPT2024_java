@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class test11 {
+public class Kinhtedothi {
 
     // URL gốc
     private static final String BASE_URL = "https://diem.kinhtedothi.vn/thpt/";
