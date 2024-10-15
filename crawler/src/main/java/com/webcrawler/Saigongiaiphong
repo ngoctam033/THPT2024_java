@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class test6 {
+public class Saigongiaiphong {
 
     // URL và các thông tin cố định
     private static final String BASE_URL = "https://api.sggp.org.vn/api/diem-thi?type=0&keyword=";
