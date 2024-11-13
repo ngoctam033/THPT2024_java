@@ -3,7 +3,7 @@ services:
   zookeeper:
     image: docker.io/bitnami/zookeeper:3.9
     container_name: zookeeper-1
-    restart: always
+    # restart: always
     environment:
       - ALLOW_ANONYMOUS_LOGIN=yes
     networks:
@@ -57,6 +57,8 @@ services:
     container_name: crawler-1
     depends_on:
       - kafka
+    volumes:
+      - ./crawler/target/crawler-1.0-SNAPSHOT.jar:/app/crawler.jar
     networks:
       - app-network
 

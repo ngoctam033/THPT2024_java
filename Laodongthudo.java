@@ -1,4 +1,9 @@
-package com.example;
+package com.webcrawler;
+
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -6,25 +11,19 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
 import com.google.gson.Gson;
 
-public class Congthuong {
+public class Laodongthudo {
 
     // URL và CSS Selector
-    private static final String BASE_URL = "https://congthuong.vn/tra-cuu-diem-thi&type_of_score=1&sbd=";
-    private static final String CSS_SELECTOR = "#main > div.main-body.fw.lt.clearfix > div > div > table > tbody > tr:nth-child(7) > td > table > tbody";
-
+    private static final String BASE_URL = "https://laodongthudo.vn/tra-cuu-diem-thi&type_of_score=1&sbd=";
+    private static final String CSS_SELECTOR = "#main > div > section > div > table > tbody > tr:nth-child(7) > td > table > tbody";
+    
     // Hàm fetchScores: duyệt qua từng thí sinh để lấy điểm
     public static void fetchScores(int idStart, int numRecords) {
         for (int i = 0; i < numRecords; i++) {

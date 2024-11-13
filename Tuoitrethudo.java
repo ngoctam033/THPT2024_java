@@ -10,7 +10,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 
 public class Tuoitrethudo {
     private static final String BASE_URL = "https://tuoitrethudo.vn/tra-cuu-diem-thi&type_of_score=1&sbd=";
@@ -32,7 +31,7 @@ public class Tuoitrethudo {
             try {
                 String htmlContent = fetchHtml(url);
                 Map<String, String> scores = parseScores(htmlContent, CSS_SELECTOR);
-                String json = convertToJson(idStr, scores);
+                String json = convertToJson(scores);
                 System.out.println(json);
                 // sendToKafka(json); // Uncomment this line to send to Kafka
                 Thread.sleep(SLEEP_TIME_MS);
@@ -85,17 +84,8 @@ public class Tuoitrethudo {
         return scores;
     }
 
-    public String convertToJson(String idStr, Map<String, String> scores) {
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("ID", idStr);
-    
-        JsonObject scoreObject = new JsonObject();
-        for (Map.Entry<String, String> entry : scores.entrySet()) {
-            scoreObject.addProperty(entry.getKey(), entry.getValue());
-        }
-    
-        jsonObject.add("Score", scoreObject);
-        return new Gson().toJson(jsonObject);
+    public String convertToJson(Map<String, String> scores) {
+        return new Gson().toJson(scores);
     }
 
     // Uncomment this method to send data to Kafka

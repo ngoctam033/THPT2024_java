@@ -1,4 +1,9 @@
-package com.example;
+package com.webcrawler;
+
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -8,33 +13,29 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+public class Thoibaovtv {
+    
+    private static final String URL_TEMPLATE = "https://vtvapi3.vtv.vn/handlers/timdiemthi.ashx?keywords=";
 
-public class Dantri {
-
-    private static final String URL_TEMPLATE = "https://dantri.com.vn/thpt/1/0/99/%s/2024/0.2/search-gradle.htm";
-
-    // Hàm fetchScores: lấy dữ liệu điểm cho từng thí sinh
+    // Hàm fetchScores: lấy dữ liệu điểm cho từng thí sinh từ ID bắt đầu đến số lượng bản ghi
     public static void fetchScores(int idStart, int numRecords) {
         for (int i = 0; i < numRecords; i++) {
             int currentId = idStart + i;
             String idStr = String.valueOf(currentId);
-            String url = String.format(URL_TEMPLATE, idStr);
+            String url = URL_TEMPLATE + idStr;
 
             try {
-                // Lấy dữ liệu HTML từ server
+                // Fetch the HTML content from the server
                 String jsonResponse = fetchHtml(url);
                 if (jsonResponse != null) {
-                    // Chuyển đổi dữ liệu JSON thành điểm thi
+                    // Parse the JSON response and extract the scores
                     Map<String, String> scores = parseScores(jsonResponse);
                     if (scores != null) {
-                        // Ghi điểm thi vào tệp
+                        // Save the extracted scores to a file
                         saveToFile(scores);
                         System.out.println("Scores saved for ID: " + idStr);
                     } else {
@@ -42,7 +43,7 @@ public class Dantri {
                     }
                 }
 
-                // Tạm dừng 5 giây giữa các yêu cầu
+                // Pause for 5 seconds between requests to avoid overloading the server
                 Thread.sleep(5000);
             } catch (Exception e) {
                 System.err.println("Error processing ID: " + idStr);
@@ -68,27 +69,26 @@ public class Dantri {
         }
     }
 
-    // Hàm parseScores: phân tích dữ liệu JSON và trả về điểm thi dưới dạng Map
+    // Hàm parseScores: phân tích dữ liệu JSON để lấy điểm thi của thí sinh
     public static Map<String, String> parseScores(String jsonResponse) {
-        JsonObject jsonObject = JsonParser.parseString(jsonResponse).getAsJsonObject();
-        JsonObject student = jsonObject.getAsJsonObject("student");
-
-        if (student != null) {
+        JsonArray dataArray = JsonParser.parseString(jsonResponse).getAsJsonArray();
+        
+        if (dataArray != null && dataArray.size() > 0) {
+            JsonObject student = dataArray.get(0).getAsJsonObject(); // Lấy kết quả đầu tiên
             Map<String, String> scores = new HashMap<>();
-            scores.put("Số báo danh", student.get("sbd").getAsString());
+            String sbd = student.get("SOBAODANH").getAsString();
+            scores.put("Số báo danh", sbd);
 
-            // Thêm điểm vào map nếu có trong dữ liệu
-            putIfPresent(scores, "Toán", student, "toan");
-            putIfPresent(scores, "Ngữ văn", student, "van");
-            putIfPresent(scores, "Ngoại ngữ", student, "ngoaiNgu");
-            putIfPresent(scores, "Vật lý", student, "vatLy");
-            putIfPresent(scores, "Hóa học", student, "hoaHoc");
-            putIfPresent(scores, "Sinh học", student, "sinhHoc");
-            putIfPresent(scores, "Lịch sử", student, "lichSu");
-            putIfPresent(scores, "Địa lý", student, "diaLy");
-            putIfPresent(scores, "Giáo dục công dân", student, "gdcd");
-            putIfPresent(scores, "Điểm trung bình tự nhiên", student, "diemTBTuNhien");
-            putIfPresent(scores, "Điểm trung bình xã hội", student, "diemTBXaHoi");
+            // Thêm điểm cho các môn học nếu có trong dữ liệu
+            putIfPresent(scores, "Toán", student, "TOAN");
+            putIfPresent(scores, "Ngữ văn", student, "VAN");
+            putIfPresent(scores, "Ngoại ngữ", student, "NGOAI_NGU");
+            putIfPresent(scores, "Vật lý", student, "LY");
+            putIfPresent(scores, "Hóa học", student, "HOA");
+            putIfPresent(scores, "Sinh học", student, "SINH");
+            putIfPresent(scores, "Lịch sử", student, "SU");
+            putIfPresent(scores, "Địa lý", student, "DIA");
+            putIfPresent(scores, "Giáo dục công dân", student, "GIAO_DUC_CONG_DAN");
 
             return scores;
         }

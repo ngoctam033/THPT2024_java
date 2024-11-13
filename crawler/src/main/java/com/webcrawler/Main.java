@@ -1,5 +1,7 @@
 package com.webcrawler;
 
+import com.webcrawler.Tuoitrethudo;
+
 public class Main {
     public static void main(String[] args) {
         Tuoitrethudo crawler = new Tuoitrethudo("score");
