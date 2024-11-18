@@ -5,7 +5,7 @@ FROM openjdk:20-jdk-slim
 WORKDIR /app
 
 # Sao chép tệp JAR vào thư mục làm việc
-COPY target/crawler-1.0-SNAPSHOT.jar /app/crawler.jar
+COPY target/crawler_congthuong-1.0-SNAPSHOT.jar /app/crawler.jar
 
 # Chỉ định lệnh để chạy chương trình Java
 CMD ["java", "-jar", "crawler.jar"]

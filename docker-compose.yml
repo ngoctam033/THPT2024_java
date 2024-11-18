@@ -85,7 +85,31 @@ services:
         - ./crawler_dantri/target/crawler_dantri-1.0-SNAPSHOT.jar:/app/crawler.jar
       networks: 
         - app-network
-  
+
+  crawler_kinhtedothi:
+    build:
+      context: ./crawler_kinhtedothi
+      dockerfile: Dockerfile
+    container_name: crawler-kinhtedothi
+    depends_on:
+      - kafka
+    volumes:
+      - ./crawler_kinhtedothi/target/crawler_kinhtedothi-1.0-SNAPSHOT.jar:/app/crawler.jar
+    networks:
+      - app-network  
+
+  crawler_laodongthudo:
+    build:
+      context: ./crawler_laodongthudo
+      dockerfile: Dockerfile
+    container_name: crawler-laodongthudo
+    depends_on:
+      - kafka
+    volumes:
+      - ./crawler_laodongthudo/target/crawler_laodongthudo-1.0-SNAPSHOT.jar:/app/crawler.jar
+    networks:
+      - app-network 
+
   db:
       image: postgres:13
       container_name: postgres-1
