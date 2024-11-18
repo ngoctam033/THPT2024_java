@@ -50,15 +50,27 @@ services:
       "
  
   # cấu hình dịch vụ crawler
-  crawler:
+  crawler_tuoitrethudo:
     build:
-      context: ./crawler
+      context: ./crawler_tuoitrethudo
       dockerfile: Dockerfile
-    container_name: crawler-1
+    container_name: crawler-tuoitrethudo
     depends_on:
       - kafka
     volumes:
-      - ./crawler/target/crawler-1.0-SNAPSHOT.jar:/app/crawler.jar
+      - ./crawler_tuoitrethudo/target/crawler-1.0-SNAPSHOT.jar:/app/crawler.jar
+    networks:
+      - app-network
+
+  crawler_congthuong:
+    build:
+      context: ./crawler_congthuong
+      dockerfile: Dockerfile
+    container_name: crawler-2
+    depends_on:
+      - kafka
+    volumes:
+      - ./crawler_congthuong/target/crawler-1.0-SNAPSHOT.jar:/app/crawler.jar
     networks:
       - app-network
 
