@@ -1,9 +1,10 @@
 package com.webcrawler;
 
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
+import java.util.concurrent.Future;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -15,13 +16,35 @@ import org.apache.http.util.EntityUtils;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import org.apache.kafka.clients.producer.KafkaProducer;
+import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.clients.producer.RecordMetadata;
+import org.apache.kafka.common.serialization.StringSerializer;
 
 public class Dantri {
 
     private static final String URL_TEMPLATE = "https://dantri.com.vn/thpt/1/0/99/%s/2024/0.2/search-gradle.htm";
+    private static final int SLEEP_TIME_MS = 5000;
+
+    private final String topic;
+    private KafkaProducer<String, String> producer;
+
+    public Dantri(String topic) {
+        this.topic = topic;
+        initializeKafkaProducer();
+    }
+
+    private void initializeKafkaProducer() {
+        Properties props = new Properties();
+        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "kafka:9093");
+        props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+        props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+        producer = new KafkaProducer<>(props);
+    }
 
     // Hàm fetchScores: lấy dữ liệu điểm cho từng thí sinh
-    public static void fetchScores(int idStart, int numRecords) {
+    public void fetchScores(int idStart, int numRecords) {
         for (int i = 0; i < numRecords; i++) {
             int currentId = idStart + i;
             String idStr = String.valueOf(currentId);
@@ -34,16 +57,17 @@ public class Dantri {
                     // Chuyển đổi dữ liệu JSON thành điểm thi
                     Map<String, String> scores = parseScores(jsonResponse);
                     if (scores != null) {
-                        // Ghi điểm thi vào tệp
-                        saveToFile(scores);
-                        System.out.println("Scores saved for ID: " + idStr);
+                        // Chuyển đổi điểm thi sang JSON và gửi đến Kafka
+                        String json = convertToJson(idStr, scores);
+                        System.out.println(json);
+                        sendToKafka(json);
                     } else {
                         System.out.println("No scores found for ID: " + idStr);
                     }
                 }
 
                 // Tạm dừng 5 giây giữa các yêu cầu
-                Thread.sleep(5000);
+                Thread.sleep(SLEEP_TIME_MS);
             } catch (Exception e) {
                 System.err.println("Error processing ID: " + idStr);
                 e.printStackTrace();
@@ -103,15 +127,38 @@ public class Dantri {
         }
     }
 
-    // Hàm saveToFile: lưu điểm vào tệp JSON
-    public static void saveToFile(Map<String, String> scores) {
-        try (FileWriter file = new FileWriter("score.json", true)) { // Append to file
-            Gson gson = new Gson();
-            String json = gson.toJson(scores);
-            file.write(json + "\n");
-            file.flush(); // Đảm bảo dữ liệu được ghi ra tệp
-            System.out.println("Data saved to score.json");
-        } catch (IOException e) {
+    // Lớp nội bộ để đại diện cho cấu trúc JSON
+    private static class ScoreResult {
+        private String ID;
+        private Map<String, String> score;
+
+        public ScoreResult(String ID, Map<String, String> score) {
+            this.ID = ID;
+            this.score = score;
+        }
+    }
+
+    // Hàm convertToJson: chuyển map thành chuỗi JSON
+    public static String convertToJson(String id, Map<String, String> scores) {
+        // Tạo một bản sao của map và loại bỏ "Số báo danh"
+        Map<String, String> scoreMap = new HashMap<>(scores);
+        scoreMap.remove("Số báo danh");
+
+        ScoreResult result = new ScoreResult(id, scoreMap);
+        return new Gson().toJson(result);
+    }
+
+    // Hàm sendToKafka: gửi dữ liệu đến Kafka
+    private void sendToKafka(String json) {
+        try {
+            ProducerRecord<String, String> record = new ProducerRecord<>(this.topic, json);
+            Future<RecordMetadata> future = producer.send(record);
+            RecordMetadata metadata = future.get();
+            System.out.println("Message sent to topic: " + metadata.topic() +
+                    " partition: " + metadata.partition() +
+                    " offset: " + metadata.offset());
+        } catch (Exception e) {
+            System.err.println("Failed to send message to Kafka: " + e.getMessage());
             e.printStackTrace();
         }
     }
