@@ -110,6 +110,30 @@ services:
     networks:
       - app-network 
 
+  crawler_thoibaovtv:
+    build:
+      context: ./crawler_thoibaovtv
+      dockerfile: Dockerfile
+    container_name: crawler-thoibaovtv
+    depends_on:
+      - kafka
+    volumes:
+      - ./crawler_thoibaovtv/target/crawler_thoibaovtv-1.0-SNAPSHOT.jar:/app/crawler.jar
+    networks:
+      - app-network 
+
+  crawler_saigongiaiphong:
+    build:
+      context: ./crawler_saigongiaiphong
+      dockerfile: Dockerfile
+    container_name: crawler-saigongiaiphong
+    depends_on:
+      - kafka
+    volumes:
+      - ./crawler_saigongiaiphong/target/crawler_saigongiaiphong-1.0-SNAPSHOT.jar:/app/crawler.jar
+    networks:
+      - app-network 
+
   db:
       image: postgres:13
       container_name: postgres-1
