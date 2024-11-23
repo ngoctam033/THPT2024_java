@@ -110,7 +110,7 @@ public class Dantri {
             putIfPresent(scores, "Sinh học", student, "sinhHoc");
             putIfPresent(scores, "Lịch sử", student, "lichSu");
             putIfPresent(scores, "Địa lý", student, "diaLy");
-            putIfPresent(scores, "Giáo dục công dân", student, "gdcd");
+            putIfPresent(scores, "GDCD", student, "gdcd");
             putIfPresent(scores, "Điểm trung bình tự nhiên", student, "diemTBTuNhien");
             putIfPresent(scores, "Điểm trung bình xã hội", student, "diemTBXaHoi");
 

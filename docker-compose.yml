@@ -43,7 +43,7 @@ services:
       # blocks until kafka is reachable
       kafka-topics --bootstrap-server kafka:9093 --list
       echo -e 'Creating kafka topics'
-      kafka-topics --bootstrap-server kafka-1:9093 --create --if-not-exists --topic thpt_2024 --replication-factor 1 --partitions 5
+      kafka-topics --bootstrap-server kafka-1:9093 --create --if-not-exists --topic thpt_2024 --replication-factor 1 --partitions 1
 
       echo -e 'Successfully created the following topics:'
       kafka-topics --bootstrap-server kafka-1:9093 --list
@@ -133,6 +133,27 @@ services:
       - ./crawler_saigongiaiphong/target/crawler_saigongiaiphong-1.0-SNAPSHOT.jar:/app/crawler.jar
     networks:
       - app-network 
+
+  kafka_consumer:
+    build:
+      context: ./kafka_consumer
+      dockerfile: Dockerfile
+    container_name: kafka-consumer
+    volumes:
+      - ./kafka_consumer/target/kafka-consumer-0.0.1-SNAPSHOT.jar:/app/kafka-consumer.jar
+    depends_on:
+      - kafka
+      - db
+    ports:
+      - "8080:8080"
+    networks:
+      - app-network
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/mydatabase
+      SPRING_DATASOURCE_USERNAME: myuser
+      SPRING_DATASOURCE_PASSWORD: mypassword
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9093
+      SPRING_KAFKA_CONSUMER_GROUP_ID: group_id
 
   db:
       image: postgres:13

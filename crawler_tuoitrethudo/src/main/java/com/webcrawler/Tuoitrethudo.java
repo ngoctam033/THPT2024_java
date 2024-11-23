@@ -111,7 +111,7 @@ public class Tuoitrethudo {
             scoreObject.addProperty(entry.getKey(), entry.getValue());
         }
     
-        jsonObject.add("Score", scoreObject);
+        jsonObject.add("scores", scoreObject);
         return new Gson().toJson(jsonObject);
     }
 

@@ -112,7 +112,7 @@ public class Thoibaovtv {
             putIfPresent(scores, "Sinh học", student, "SINH");
             putIfPresent(scores, "Lịch sử", student, "SU");
             putIfPresent(scores, "Địa lý", student, "DIA");
-            putIfPresent(scores, "Giáo dục công dân", student, "GIAO_DUC_CONG_DAN");
+            putIfPresent(scores, "GDCD", student, "GIAO_DUC_CONG_DAN");
 
             return scores;
         }

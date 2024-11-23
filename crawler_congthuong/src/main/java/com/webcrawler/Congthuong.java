@@ -41,7 +41,7 @@ public class Congthuong {
 
     private void initializeKafkaProducer() {
         Properties props = new Properties();
-        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "kafka:9093");
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         producer = new KafkaProducer<>(props);
@@ -127,11 +127,11 @@ public class Congthuong {
     // Lớp nội bộ để đại diện cho cấu trúc JSON
     private static class ScoreResult {
         private String ID;
-        private Map<String, String> Score;
+        private Map<String, String> score;
 
         public ScoreResult(String ID, Map<String, String> Score) {
             this.ID = ID;
-            this.Score = Score;
+            this.score = Score;
         }
     }
 

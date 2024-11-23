@@ -109,7 +109,7 @@ public class Kinhtedothi {
         addScoreIfExists(studentData, "sinh", "Sinh học", scores);
         addScoreIfExists(studentData, "su", "Lịch sử", scores);
         addScoreIfExists(studentData, "dia", "Địa lý", scores);
-        addScoreIfExists(studentData, "cd", "Giáo dục công dân", scores);
+        addScoreIfExists(studentData, "cd", "GDCD", scores);
         addScoreIfExists(studentData, "nn", "Ngoại ngữ", scores);
         addScoreIfExists(studentData, "mnn", "Mã Ngoại ngữ", scores);
 

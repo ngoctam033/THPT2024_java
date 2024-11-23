@@ -119,7 +119,7 @@ public class Saigongiaiphong {
                 addScoreIfExists(result, "dm05", "Sinh học", scores);
                 addScoreIfExists(result, "dm06", "Lịch sử", scores);
                 addScoreIfExists(result, "dm07", "Địa lý", scores); 
-                addScoreIfExists(result, "dm08", "Giáo dục công dân", scores);
+                addScoreIfExists(result, "dm08", "GDCD", scores);
                 addScoreIfExists(result, "dm09", "Ngoại ngữ", scores); 
                 addScoreIfExists(result, "dm10", "Môn khác", scores); 
             }

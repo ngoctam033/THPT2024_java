@@ -1,4 +1,4 @@
-# Created at 2024-11-19T10:30:57.071
+# Created at 2024-11-20T13:25:02.898
 Boot Manifest-JAR contains absolute paths in classpath 'D:\OneDrive - ut.edu.vn\.CODE\THPT2024_java\crawler_saigongiaiphong\target\test-classes'
 Hint: <argLine>-Djdk.net.URLClassPath.disableClassPathURLCheck=true</argLine>
 'other' has different root
