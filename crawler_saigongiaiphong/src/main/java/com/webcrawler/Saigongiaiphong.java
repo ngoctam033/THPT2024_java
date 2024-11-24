@@ -27,7 +27,7 @@ public class Saigongiaiphong {
 
     private static final String BASE_URL = "https://api.sggp.org.vn/api/diem-thi?type=0&keyword=";
     private static final String QUERY_PARAMS = "&kythi=THPT&nam=2024&cumthi=0";
-    private static final int SLEEP_TIME_MS = 5000;
+    private static final int SLEEP_TIME_MS = 30000;
 
     private final String topic;
     private KafkaProducer<String, String> producer;
@@ -140,11 +140,11 @@ public class Saigongiaiphong {
     // Lớp nội bộ để đại diện cho cấu trúc JSON
     private static class ScoreResult {
         private String ID;
-        private Map<String, String> score;
+        private Map<String, String> scores;
 
-        public ScoreResult(String ID, Map<String, String> score) {
+        public ScoreResult(String ID, Map<String, String> scores) {
             this.ID = ID;
-            this.score = score;
+            this.scores = scores;
         }
     }
 

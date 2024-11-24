@@ -6,7 +6,7 @@ import java.util.Map;
 import com.google.gson.Gson;
 import com.example.demo.model.ModelScore;
 import com.example.demo.entity.StudentScore;
-// import com.example.demo.repository.StudentScoreRepository;
+import com.example.demo.repository.StudentScoreRepository;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 public class KafkaConsumerService {
     
     @Autowired
-    // private StudentScoreRepository studentScoreRepository;
+    private StudentScoreRepository studentScoreRepository;
 
     private static final Map<String, String> SUBJECT_KEY_MAPPING = Map.ofEntries(
         Map.entry("Anh", "Anh"),
@@ -78,7 +78,7 @@ public class KafkaConsumerService {
             studentScore.setGdcd(parseFloat(normalizedScores.get("Gdcd")));
 
             // Save to database
-            // studentScoreRepository.save(studentScore);
+            studentScoreRepository.save(studentScore);
 
             // In ra điểm số của học sinh
             System.out.println("ID: " + studentScore.getStudentId());

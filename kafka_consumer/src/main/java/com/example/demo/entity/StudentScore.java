@@ -9,7 +9,7 @@ public class StudentScore {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "student_id", nullable = false)
+    @Column(name = "student_id", nullable = false, unique = true)
     private String studentId;
 
     @Column(name = "toan")

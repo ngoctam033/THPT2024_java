@@ -30,7 +30,7 @@ public class Laodongthudo {
 
     private static final String BASE_URL = "https://laodongthudo.vn/tra-cuu-diem-thi&type_of_score=1&sbd=";
     private static final String CSS_SELECTOR = "#main > div > section > div > table > tbody > tr:nth-child(7) > td > table > tbody";
-    private static final int SLEEP_TIME_MS = 5000;
+    private static final int SLEEP_TIME_MS = 30000;
 
     private final String topic;
     private KafkaProducer<String, String> producer;
@@ -128,11 +128,11 @@ public class Laodongthudo {
     // Lớp nội bộ để đại diện cho cấu trúc JSON
     private static class ScoreResult {
         private String ID;
-        private Map<String, String> score;
+        private Map<String, String> scores;
 
-        public ScoreResult(String ID, Map<String, String> score) {
+        public ScoreResult(String ID, Map<String, String> scores) {
             this.ID = ID;
-            this.score = score;
+            this.scores = scores;
         }
     }
 

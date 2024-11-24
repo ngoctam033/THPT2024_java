@@ -134,6 +134,18 @@ services:
     networks:
       - app-network 
 
+  crawler_vnexpress:
+    build:
+      context: ./crawler_vnexpress
+      dockerfile: Dockerfile
+    container_name: crawler-vnexpress
+    depends_on:
+      - kafka
+    volumes:
+      - ./crawler_vnexpress/target/crawler_vnexpress-1.0-SNAPSHOT.jar:/app/crawler.jar
+    networks:
+      - app-network 
+
   kafka_consumer:
     build:
       context: ./kafka_consumer
@@ -148,19 +160,14 @@ services:
       - "8080:8080"
     networks:
       - app-network
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/mydatabase
-      SPRING_DATASOURCE_USERNAME: myuser
-      SPRING_DATASOURCE_PASSWORD: mypassword
-      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9093
-      SPRING_KAFKA_CONSUMER_GROUP_ID: group_id
 
   db:
       image: postgres:13
       container_name: postgres-1
       environment:
-        POSTGRES_DB: mydatabase
-        POSTGRES_USER: myuser
+        POSTGRES_DB: thpt2024
+        POSTGRES_USER: thpt2024
+        POSTGRES_PASSWORD: thpt2024
         POSTGRES_HOST_AUTH_METHOD: trust
       ports:
         - "5432:5432"

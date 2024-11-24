@@ -25,7 +25,7 @@ import org.apache.kafka.common.serialization.StringSerializer;
 public class Kinhtedothi {
 
     private static final String BASE_URL = "https://diem.kinhtedothi.vn/thpt/";
-    private static final int SLEEP_TIME_MS = 5000;
+    private static final int SLEEP_TIME_MS = 30000;
 
     private final String topic;
     private KafkaProducer<String, String> producer;
@@ -127,11 +127,11 @@ public class Kinhtedothi {
     // Lớp nội bộ để đại diện cho cấu trúc JSON
     private static class ScoreResult {
         private String ID;
-        private Map<String, String> score;
+        private Map<String, String> scores;
 
-        public ScoreResult(String ID, Map<String, String> score) {
+        public ScoreResult(String ID, Map<String, String> scores) {
             this.ID = ID;
-            this.score = score;
+            this.scores = scores;
         }
     }
 

@@ -19,15 +19,15 @@ import org.jsoup.select.Elements;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
-public class Tuoitrethudo {
-    private static final String BASE_URL = "https://tuoitrethudo.vn/tra-cuu-diem-thi&type_of_score=1&sbd=";
-    private static final String CSS_SELECTOR = "#main > div > div > div > table > tbody > tr:nth-child(7) > td > table > tbody";
+public class Vnexpress {
+    private static final String BASE_URL = "https://diemthi.vnexpress.net/index/detail/sbd/%s/year/2024";
+    private static final String CSS_SELECTOR = "#warpper > div.section-content.clearfix > div.section_main.width_common > div.section-body.width_common > div > div.o-detail-thisinh > div:nth-child(2) > table > tbody";
     private static final int SLEEP_TIME_MS = 30000;
 
     private final String topic;
     private KafkaProducer<String, String> producer;
 
-    public Tuoitrethudo(String topic) {
+    public Vnexpress(String topic) {
         this.topic = topic;
         initializeKafkaProducer();
     }
@@ -44,7 +44,7 @@ public class Tuoitrethudo {
         for (int i = 0; i < numRecords; i++) {
             int currentId = idStart + i;
             String idStr = String.valueOf(currentId);
-            String url = BASE_URL + idStr;
+            String url = String.format(BASE_URL, idStr);
 
             try {
                 String htmlContent = fetchHtml(url);
