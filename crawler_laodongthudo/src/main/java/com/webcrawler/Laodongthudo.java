@@ -30,7 +30,7 @@ public class Laodongthudo {
 
     private static final String BASE_URL = "https://laodongthudo.vn/tra-cuu-diem-thi&type_of_score=1&sbd=";
     private static final String CSS_SELECTOR = "#main > div > section > div > table > tbody > tr:nth-child(7) > td > table > tbody";
-    private static final int SLEEP_TIME_MS = 30000;
+    private static final int SLEEP_TIME_MS = 12000;
 
     private final String topic;
     private KafkaProducer<String, String> producer;

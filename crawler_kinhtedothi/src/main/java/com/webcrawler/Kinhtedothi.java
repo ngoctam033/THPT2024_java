@@ -25,7 +25,7 @@ import org.apache.kafka.common.serialization.StringSerializer;
 public class Kinhtedothi {
 
     private static final String BASE_URL = "https://diem.kinhtedothi.vn/thpt/";
-    private static final int SLEEP_TIME_MS = 30000;
+    private static final int SLEEP_TIME_MS = 12000;
 
     private final String topic;
     private KafkaProducer<String, String> producer;

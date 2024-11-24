@@ -295,3 +295,236 @@ plt.show()
 Bắt đầu với những phân tích cơ bản và trực quan hóa đơn giản, sau đó tiến tới các phương pháp phức tạp hơn khi bạn đã quen thuộc với dữ liệu. Việc trực quan hóa dữ liệu không chỉ giúp bạn hiểu rõ hơn về thông tin mà còn hỗ trợ trong việc trình bày kết quả cho người khác một cách dễ hiểu.
 
 Nếu bạn cần hỗ trợ thêm về cách triển khai cụ thể hoặc có câu hỏi khác, hãy cho tôi biết!
+
+
+### **Ý Tưởng Trực Quan Hóa Dữ Liệu Cho 
+
+StudentScore
+
+**
+
+Dưới đây là một số ý tưởng trực quan hóa dữ liệu giúp bạn phát hiện các insight quan trọng từ bảng `student_scores`:
+
+---
+
+#### **1. Điểm Trung Bình Các Môn Học**
+- **Mục Tiêu:** Xác định môn học mà học sinh đạt điểm cao hoặc thấp nhất.
+- **Biểu Đồ:** **Biểu Đồ Cột (Bar Chart)**
+  
+  ```java
+  // Sử dụng JFreeChart để tạo biểu đồ cột
+  import org.jfree.chart.ChartFactory;
+  import org.jfree.chart.ChartUtils;
+  import org.jfree.chart.JFreeChart;
+  import org.jfree.data.category.DefaultCategoryDataset;
+
+  DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+  dataset.addValue(8.5, "Điểm Trung Bình", "Toán");
+  dataset.addValue(7.2, "Điểm Trung Bình", "Văn");
+  dataset.addValue(6.8, "Điểm Trung Bình", "Anh");
+  // Thêm các môn khác
+
+  JFreeChart barChart = ChartFactory.createBarChart(
+      "Điểm Trung Bình Các Môn Học",
+      "Môn Học",
+      "Điểm",
+      dataset
+  );
+
+  ChartUtils.saveChartAsPNG(new File("average_scores.png"), barChart, 800, 600);
+  ```
+
+---
+
+#### **2. Phân Phối Điểm Số Từng Môn**
+- **Mục Tiêu:** Hiểu rõ sự phân bố điểm số, nhận diện những điểm bất thường.
+- **Biểu Đồ:** **Histogram hoặc Biểu Đồ Hộp (Box Plot)**
+  
+  ```java
+  // Sử dụng JFreeChart để tạo histogram cho môn Toán
+  import org.jfree.data.statistics.HistogramDataset;
+
+  HistogramDataset dataset = new HistogramDataset();
+  double[] mathScores = {7.5, 8.0, 6.5, 9.0, 7.0, ...};
+  dataset.addSeries("Toán", mathScores, 10);
+
+  JFreeChart histogram = ChartFactory.createHistogram(
+      "Phân Phối Điểm Toán",
+      "Điểm",
+      "Số Học Sinh",
+      dataset
+  );
+
+  ChartUtils.saveChartAsPNG(new File("math_distribution.png"), histogram, 800, 600);
+  ```
+
+---
+
+#### **3. Ma Trận Tương Quan Giữa Các Môn Học**
+- **Mục Tiêu:** Tìm hiểu mối liên hệ giữa các môn học, ví dụ: học sinh giỏi Toán có thường giỏi Lý không.
+- **Biểu Đồ:** **Heatmap Ma Trận Tương Quan**
+  
+  ```java
+  // Sử dụng Apache Commons Math và JFreeChart để tính tương quan và tạo heatmap
+  import org.apache.commons.math3.stat.correlation.PearsonsCorrelation;
+
+  double[][] scores = {
+      {7.5, 8.0, 6.5, ...}, // Học sinh 1
+      {8.0, 7.5, 7.0, ...}, // Học sinh 2
+      // Các học sinh khác
+  };
+
+  PearsonsCorrelation correlation = new PearsonsCorrelation();
+  double[][] corrMatrix = correlation.computeCorrelationMatrix(scores).getData();
+
+  // Tạo heatmap sử dụng thư viện hỗ trợ hoặc chuyển dữ liệu vào front-end
+  ```
+
+---
+
+#### **4. Xếp Hạng Học Sinh Dựa Trên Tổng Điểm**
+- **Mục Tiêu:** Xác định các học sinh xuất sắc và cần cải thiện.
+- **Biểu Đồ:** **Biểu Đồ Cột Xếp Hạng (Bar Chart Ranking)**
+  
+  ```java
+  // Tính tổng điểm và sắp xếp
+  List<StudentScore> scores = studentScoreRepository.findAll();
+  scores.sort((s1, s2) -> Float.compare(
+      s2.getToan() + s2.getVan() + s2.getAnh() + ..., 
+      s1.getToan() + s1.getVan() + s1.getAnh() + ...
+  ));
+
+  DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+  for(int i = 0; i < 10; i++) {
+      StudentScore s = scores.get(i);
+      float total = s.getToan() + s.getVan() + s.getAnh() + ...;
+      dataset.addValue(total, "Tổng Điểm", s.getStudentId());
+  }
+
+  JFreeChart rankingChart = ChartFactory.createBarChart(
+      "Top 10 Học Sinh Xuất Sắc",
+      "Student ID",
+      "Tổng Điểm",
+      dataset
+  );
+
+  ChartUtils.saveChartAsPNG(new File("top_students.png"), rankingChart, 800, 600);
+  ```
+
+---
+
+#### **5. So Sánh Điểm Trung Bình Giữa Các Lớp hoặc Khối**
+- **Mục Tiêu:** Đánh giá hiệu suất học tập giữa các lớp hoặc khối khác nhau.
+- **Biểu Đồ:** **Biểu Đồ Cột Nhóm (Grouped Bar Chart)**
+  
+  ```java
+  DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+  dataset.addValue(8.5, "Lớp A", "Toán");
+  dataset.addValue(7.2, "Lớp A", "Văn");
+  dataset.addValue(6.8, "Lớp B", "Toán");
+  dataset.addValue(7.5, "Lớp B", "Văn");
+  // Thêm các lớp khác
+
+  JFreeChart groupedBarChart = ChartFactory.createBarChart(
+      "So Sánh Điểm Trung Bình Giữa Các Lớp",
+      "Môn Học",
+      "Điểm",
+      dataset
+  );
+
+  ChartUtils.saveChartAsPNG(new File("class_comparison.png"), groupedBarChart, 800, 600);
+  ```
+
+---
+
+#### **6. Tỷ Lệ Đậu/Rớt Theo Môn Học**
+- **Mục Tiêu:** Xác định môn học có tỷ lệ đậu thấp để tập trung cải thiện.
+- **Biểu Đồ:** **Biểu Đồ Tròn (Pie Chart) hoặc Biểu Đồ Cột Đểu/Rớt**
+  
+  ```java
+  DefaultPieDataset dataset = new DefaultPieDataset();
+  dataset.setValue("Đậu", 80);
+  dataset.setValue("Rớt", 20);
+
+  JFreeChart pieChart = ChartFactory.createPieChart(
+      "Tỷ Lệ Đậu/Rớt Môn Toán",
+      dataset,
+      true, true, false
+  );
+
+  ChartUtils.saveChartAsPNG(new File("pass_rate_math.png"), pieChart, 800, 600);
+  ```
+
+---
+
+#### **7. Dashboard Tương Tác**
+- **Mục Tiêu:** Tổng hợp nhiều biểu đồ vào một giao diện tương tác để dễ dàng theo dõi các chỉ số chính.
+- **Công Cụ Đề Xuất:** **Thymeleaf với JavaScript (D3.js, Chart.js), hoặc Front-end Frameworks (React, Vue.js)**
+  
+  ```html
+  <!-- Ví dụ sử dụng Thymeleaf và Chart.js trong index.html -->
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+      <meta charset="UTF-8">
+      <title>Dashboard Điểm Thi</title>
+      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+      <h1>Dashboard Điểm Thi Sinh Viên</h1>
+      <canvas id="averageChart"></canvas>
+      <script>
+          const ctx = document.getElementById('averageChart').getContext('2d');
+          const averageChart = new Chart(ctx, {
+              type: 'bar',
+              data: {
+                  labels: ['Toán', 'Văn', 'Anh', 'Lý', 'Hóa', 'Sinh', 'Sử', 'Địa', 'GDCD'],
+                  datasets: [{
+                      label: 'Điểm Trung Bình',
+                      data: [8.5, 7.2, 6.8, 7.0, 7.5, 7.8, 6.5, 7.1, 7.3],
+                      backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                      borderColor: 'rgba(75, 192, 192, 1)',
+                      borderWidth: 1
+                  }]
+              },
+              options: {
+                  scales: {
+                      y: {
+                          beginAtZero: true
+                      }
+                  }
+              }
+          });
+      </script>
+  </body>
+  </html>
+  ```
+
+---
+
+### **Gợi Ý Thêm**
+
+- **Filter và Drill-Down:** Cho phép người dùng lọc dữ liệu theo lớp, khối, hoặc nhóm điểm để xem chi tiết.
+- **Export & Share:** Tích hợp chức năng xuất báo cáo dưới dạng PDF hoặc Excel.
+- **Real-Time Updates:** Nếu dữ liệu được cập nhật liên tục, hãy sử dụng WebSocket để hiển thị dữ liệu thời gian thực.
+
+### **Công Cụ Hỗ Trợ**
+
+- **Java Libraries:**
+  - **JFreeChart:** Tạo các biểu đồ tĩnh trong Java.
+  - **JavaFX:** Tạo giao diện người dùng phong phú với biểu đồ tương tác.
+
+- **Front-End Libraries:**
+  - **Chart.js:** Thư viện JavaScript dễ sử dụng cho các biểu đồ động.
+  - **D3.js:** Thư viện mạnh mẽ cho trực quan hóa dữ liệu tùy chỉnh.
+
+- **Dashboard Tools:**
+  - **Tableau, Power BI:** Tạo dashboard chuyên nghiệp (có thể tích hợp qua API).
+
+---
+
+### **Kết Luận**
+
+Bằng việc áp dụng các ý tưởng trực quan hóa trên, bạn có thể khai thác và trình bày các insight quan trọng từ dữ liệu điểm thi của học sinh một cách hiệu quả và dễ hiểu. Chọn lựa biểu đồ phù hợp với mục tiêu phân tích sẽ giúp người xem nhanh chóng nắm bắt được thông tin cần thiết.
+
+Nếu bạn cần hỗ trợ thêm về cách triển khai cụ thể hoặc có câu hỏi khác, hãy cho tôi biết!

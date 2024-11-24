@@ -48,7 +48,52 @@ services:
       echo -e 'Successfully created the following topics:'
       kafka-topics --bootstrap-server kafka-1:9093 --list
       "
- 
+
+  db:
+      image: postgres:13
+      container_name: postgres-1
+      environment:
+        POSTGRES_DB: thpt2024
+        POSTGRES_USER: thpt2024
+        POSTGRES_PASSWORD: thpt2024
+        POSTGRES_HOST_AUTH_METHOD: trust
+      ports:
+        - "5432:5432"
+      networks:
+        - app-network 
+
+  kafka_consumer:
+    build:
+      context: ./kafka_consumer
+      dockerfile: Dockerfile
+    container_name: kafka-consumer
+    volumes:
+      - ./kafka_consumer/target/kafka-consumer-0.0.1-SNAPSHOT.jar:/app/kafka-consumer.jar
+    depends_on:
+      - kafka
+      - db
+    ports:
+      - "8080:8080"
+    networks:
+      - app-network
+
+  visualization_service:
+    build:
+      context: ./visualization_service  # Thay đổi đường dẫn nếu cần
+      dockerfile: Dockerfile
+    container_name: visualization-service
+    volumes:
+      - ./visualization_service:/app
+    environment:
+      - FLASK_ENV=development
+      - FLASK_APP=visualization_service.py 
+    ports:
+      - "5000:5000"
+    depends_on:
+      - kafka
+    networks:
+      - app-network
+
   # cấu hình dịch vụ crawler
   crawler_tuoitrethudo:
     build:
@@ -145,34 +190,6 @@ services:
       - ./crawler_vnexpress/target/crawler_vnexpress-1.0-SNAPSHOT.jar:/app/crawler.jar
     networks:
       - app-network 
-
-  kafka_consumer:
-    build:
-      context: ./kafka_consumer
-      dockerfile: Dockerfile
-    container_name: kafka-consumer
-    volumes:
-      - ./kafka_consumer/target/kafka-consumer-0.0.1-SNAPSHOT.jar:/app/kafka-consumer.jar
-    depends_on:
-      - kafka
-      - db
-    ports:
-      - "8080:8080"
-    networks:
-      - app-network
-
-  db:
-      image: postgres:13
-      container_name: postgres-1
-      environment:
-        POSTGRES_DB: thpt2024
-        POSTGRES_USER: thpt2024
-        POSTGRES_PASSWORD: thpt2024
-        POSTGRES_HOST_AUTH_METHOD: trust
-      ports:
-        - "5432:5432"
-      networks:
-        - app-network
 
 networks:
   app-network:

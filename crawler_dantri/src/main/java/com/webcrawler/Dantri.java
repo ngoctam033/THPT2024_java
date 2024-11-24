@@ -25,7 +25,7 @@ import org.apache.kafka.common.serialization.StringSerializer;
 public class Dantri {
 
     private static final String URL_TEMPLATE = "https://dantri.com.vn/thpt/1/0/99/%s/2024/0.2/search-gradle.htm";
-    private static final int SLEEP_TIME_MS = 30000;
+    private static final int SLEEP_TIME_MS = 12000;
 
     private final String topic;
     private KafkaProducer<String, String> producer;

@@ -22,7 +22,7 @@ import com.google.gson.JsonObject;
 public class Vnexpress {
     private static final String BASE_URL = "https://diemthi.vnexpress.net/index/detail/sbd/%s/year/2024";
     private static final String CSS_SELECTOR = "#warpper > div.section-content.clearfix > div.section_main.width_common > div.section-body.width_common > div > div.o-detail-thisinh > div:nth-child(2) > table > tbody";
-    private static final int SLEEP_TIME_MS = 30000;
+    private static final int SLEEP_TIME_MS = 12000;
 
     private final String topic;
     private KafkaProducer<String, String> producer;

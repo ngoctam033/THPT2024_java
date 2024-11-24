@@ -8,6 +8,6 @@ public class Main {
         Laodongthudo laodongthudoCrawler = new Laodongthudo("thpt_2024");
 
         // Gọi phương thức fetchScores từ đối tượng này
-        laodongthudoCrawler.fetchScores(37008001, 2000);
+        laodongthudoCrawler.fetchScores(37008059, 2000);
     }
 }
