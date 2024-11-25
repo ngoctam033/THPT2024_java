@@ -8,6 +8,6 @@ public class Main {
         Thoibaovtv thoibaovtvCrawler = new Thoibaovtv("thpt_2024");
 
         // Gọi phương thức fetchScores từ đối tượng này
-        thoibaovtvCrawler.fetchScores(37013751, 500);
+        thoibaovtvCrawler.fetchScores(37010001, 2000);
     }
 }

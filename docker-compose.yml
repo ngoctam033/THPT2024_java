@@ -59,6 +59,13 @@ services:
         POSTGRES_HOST_AUTH_METHOD: trust
       ports:
         - "5432:5432"
+      volumes:
+        - ./init-db:/docker-entrypoint-initdb.d
+      healthcheck:
+        test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} || exit 1"]
+        interval: 10s
+        timeout: 5s
+        retries: 5
       networks:
         - app-network 
 
@@ -70,8 +77,10 @@ services:
     volumes:
       - ./kafka_consumer/target/kafka-consumer-0.0.1-SNAPSHOT.jar:/app/kafka-consumer.jar
     depends_on:
-      - kafka
-      - db
+      kafka:
+        condition: service_healthy
+      db:
+        condition: service_healthy
     ports:
       - "8080:8080"
     networks:
@@ -90,7 +99,8 @@ services:
     ports:
       - "5000:5000"
     depends_on:
-      - kafka
+      kafka:
+        condition: service_healthy
     networks:
       - app-network
 

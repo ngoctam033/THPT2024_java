@@ -16,27 +16,15 @@ Dự án này xây dựng một hệ thống thu thập, xử lý và trực qua
 
 Các crawler được viết bằng Java, sử dụng Maven, mỗi crawler thu thập dữ liệu từ một nguồn cụ thể:
 
-- 
-
-crawler_tuoitrethudo
-
-
-- 
+crawler_tuoitrethudo 
 
 crawler_congthuong
 
-
-- 
-
 crawler_dantri
-
-
-- 
 
 crawler_vnexpress
 
-
-- ...
+...
 
 Các crawler sẽ lấy dữ liệu điểm thi và gửi tới Kafka topic `thpt_2024`.
 
@@ -71,7 +59,7 @@ Cơ sở dữ liệu quan hệ để lưu trữ dữ liệu điểm thi thu th�
    Trong thư mục gốc của dự án, chạy lệnh sau để build tất cả các project con:
 
    ```bash
-   mvn clean install
+   mvn clean install -Dskiptests
    ```
 
 2. **Khởi động các dịch vụ bằng Docker Compose:**
@@ -102,47 +90,9 @@ http://localhost:8080
 
  để tương tác với API của Kafka Consumer.
 
-## Cấu trúc thư mục
-
-- 
-
-crawler_tuoitrethudo
-
-
-- 
-
-crawler_congthuong
-
-
-- 
-
-crawler_dantri
-
-
-- 
-
-crawler_vnexpress
-
-
-- 
-
-kafka_consumer
-
-
-- 
-
-visualization_service
-
-
-- 
-
-docker-compose.yml
-
- (file cấu hình Docker Compose)
-
 ## Liên hệ
 
-Nếu có thắc mắc hoặc cần hỗ trợ, vui lòng liên hệ nhóm phát triển dự án.
+Nếu có thắc mắc hoặc cần hỗ trợ, vui lòng liên hệ đến nguyenngoctam0332003@gmail.com.
 
 ---
 

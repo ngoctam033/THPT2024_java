@@ -8,6 +8,6 @@ public class Main {
         Saigongiaiphong saigongiaiphongCrawler = new Saigongiaiphong("thpt_2024");
 
         // Gọi phương thức fetchScores từ đối tượng này
-        saigongiaiphongCrawler.fetchScores(37011751, 500);
+        saigongiaiphongCrawler.fetchScores(37008001, 2000);
     }
 }

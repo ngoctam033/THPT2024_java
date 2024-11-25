@@ -5,6 +5,6 @@ import com.webcrawler.Tuoitrethudo;
 public class Main {
     public static void main(String[] args) {
         Tuoitrethudo crawler = new Tuoitrethudo("thpt_2024");
-        crawler.fetchScores(37015699, 500);
+        crawler.fetchScores(37012001, 2000);
     }
 }
