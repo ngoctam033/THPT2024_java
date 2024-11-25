@@ -59,6 +59,12 @@ Cơ sở dữ liệu quan hệ để lưu trữ dữ liệu điểm thi thu th�
    Trong thư mục gốc của dự án, chạy lệnh sau để build tất cả các project con:
 
    ```bash
+   build-all.bat
+   ```
+
+   Nếu chỉ muốn build một dự án con, vào thưc mục dự án con chạy lệnh sau:
+
+   ```bash
    mvn clean install -Dskiptests
    ```
 
@@ -67,7 +73,8 @@ Cơ sở dữ liệu quan hệ để lưu trữ dữ liệu điểm thi thu th�
    ```bash
    docker-compose up --build -d
    ```
-
+  Lưu ý, khi khởi tạo Database thì sẽ tự động insert luôn dữ liệu đã được crawl trước đó
+  Nếu muốn chạy lại từ đầu với DB trống, vui lòng bỏ tùy chọn volume trong service db trong Docker-compose.xml
 3. **Kiểm tra các container đang chạy:**
 
    ```bash
@@ -81,6 +88,7 @@ Cơ sở dữ liệu quan hệ để lưu trữ dữ liệu điểm thi thu th�
 http://localhost:5000
 
  để sử dụng dịch vụ trực quan hóa.
+ Về API document, truy cập vào APIDoc.readme của dự án
 
 5. **Sử dụng API của Kafka Consumer:**
 
@@ -89,6 +97,7 @@ http://localhost:5000
 http://localhost:8080
 
  để tương tác với API của Kafka Consumer.
+ Về API document, truy cập vào APIDoc.readme của dự án
 
 ## Liên hệ
 
