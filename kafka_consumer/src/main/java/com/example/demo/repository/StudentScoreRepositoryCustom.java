@@ -60,5 +60,5 @@ public interface StudentScoreRepositoryCustom {
     Integer countStudentsWithScoreBelowXBySubject(String subject, Double score);
 
     // định nghĩa một hàm để tính tổng số sinh viên đạt khoảng điểm từ minScore đến maxScore với độ chia là o.25
-    Map<String, Integer> getScoreDistributionBySubject(String subject, Double step);
+    Map<String, Integer> getScoreDistributionBySubjectWithStep(String subject, Double step);
 }

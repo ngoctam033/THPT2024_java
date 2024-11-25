@@ -148,7 +148,7 @@ public class StudentScoreRepositoryImpl implements StudentScoreRepositoryCustom 
      * @return Phổ điểm của môn học được chỉ định dưới dạng Map.
      */
     @Override
-    public Map<String, Integer> getScoreDistributionBySubject(String subject, Double step) {
+    public Map<String, Integer> getScoreDistributionBySubjectWithStep(String subject, Double step) {
         Subject enumSubject = Subject.fromString(subject);
         String column = enumSubject.getColumnName();
 

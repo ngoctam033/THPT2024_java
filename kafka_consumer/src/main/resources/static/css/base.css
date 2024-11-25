@@ -1,9 +1,44 @@
-/* src/main/resources/static/css/styles.css */
+/* src/main/resources/static/css/base.css */
+
+/* Đặt kiểu cơ bản cho toàn bộ trang */
 body {
     font-family: Arial, sans-serif;
     background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
 }
 
 h1 {
     color: #333;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+/* Bố trí danh sách cho các biểu đồ bằng Flexbox */
+.chart-grid {
+    display: flex;
+    flex-direction: column; /* Xếp các biểu đồ theo chiều dọc */
+    gap: 20px; /* Khoảng cách giữa các biểu đồ */
+    padding: 20px; /* Đệm xung quanh danh sách */
+}
+
+/* Kiểu dáng cho từng biểu đồ */
+.chart-item {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    height: 700px; /* Tăng chiều cao của mỗi biểu đồ */
+    position: relative; /* Để định vị nội dung con */
+    overflow: hidden; /* Ẩn nội dung tràn */
+    width: 100%; /* Chiếm toàn bộ chiều rộng của container */
+}
+
+/* Đảm bảo phần tử chứa biểu đồ chiếm toàn bộ không gian của chart-item */
+.chart-item > div {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }

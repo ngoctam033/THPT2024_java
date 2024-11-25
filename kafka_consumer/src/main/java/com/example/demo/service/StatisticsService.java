@@ -17,8 +17,8 @@ public class StatisticsService {
     @Autowired
     private StudentScoreRepository studentScoreRepository;
 
-    private final String PYTHON_SERVICE_URL = "http://visualization_service:5000/create-chart";
-    private final String PYTHON_SERVICE_URL = "http://visualization_service:5000/create-distribution-chart";
+    private final String CREATE_CHART_SERVICE_URL = "http://visualization_service:5000/create-chart";
+    private final String CREATE_DISTRIBUTION_CHART_SERVICE_URL = "http://visualization_service:5000/create-distribution-chart";
     // phương thức lấy tên môn học
     public String getSubjectName(String subject) {
         return studentScoreRepository.getSubjectName(subject);
@@ -62,8 +62,8 @@ public class StatisticsService {
     }
 
     // phương thức tính tổng số sinh viên có điểm trong khoảng từ minScore đến maxScore với độ chia là step
-    public Map<String, Integer> getScoreDistributionBySubject(String subject, Double step){
-        return studentScoreRepository.getScoreDistributionBySubject(subject, step);
+    public Map<String, Integer> getScoreDistributionBySubjectWithStep(String subject, Double step){
+        return studentScoreRepository.getScoreDistributionBySubjectWithStep(subject, step);
     }
 
     /**
@@ -72,7 +72,7 @@ public class StatisticsService {
      * @param subject Tên môn học.
      * @return Phổ điểm của môn học được chỉ định.
      */
-    public Map<String, Object> getScoreDistributionBySubject(String subject) {
+    public Map<String, Object> getScoreStatisticsBySubject(String subject) {
         Map<String, Object> scoreDistributionBySubject = new HashMap<>();
 
         // lấy tên môn học
@@ -88,7 +88,7 @@ public class StatisticsService {
         // Lấy tổng số sinh viên có điểm dưới 5
         Integer studentsBelowFive = countStudentsWithScoreBelowXBySubject(subject, 5.0);
         // Lấy phân phối điểm của môn học với step là 0.25
-        Map<String, Integer> studentsInRange = getScoreDistributionBySubject(subject, 0.25);
+        Map<String, Integer> studentsInRange = getScoreDistributionBySubjectWithStep(subject, 0.25);
 
         // Bổ sung thông tin vào phổ điểm
         scoreDistributionBySubject.put("Môn học", subjectName);
@@ -145,12 +145,44 @@ public class StatisticsService {
         }
     
         // Gửi dữ liệu đến dịch vụ Python
-        Map<String, Object> response = restTemplate.postForObject(PYTHON_SERVICE_URL, requestBody, Map.class);
+        Map<String, Object> response = restTemplate.postForObject(CREATE_CHART_SERVICE_URL, requestBody, Map.class);
     
         if (response != null && response.containsKey("chart_html")) {
             return (String) response.get("chart_html");
         } else {
             return "<p>Không thể tạo biểu đồ.</p>";
+        }
+    }
+
+    /**
+     * Gửi dữ liệu phổ điểm của một môn học đến dịch vụ Visualization và nhận lại biểu đồ.
+     *
+     * @param subject Tên môn học.
+     * @return HTML của biểu đồ được tạo ra.
+     */
+    public String getScoreDistributionChart(String subject) {
+        // Tạo đối tượng RestTemplate để thực hiện HTTP request
+        RestTemplate restTemplate = new RestTemplate();        
+
+        // Lấy dữ liệu phổ điểm với bước chia là 0.25
+        Map<String, Object> scoreDistribution = getScoreStatisticsBySubject(subject);
+
+
+        Map<String, Object> requestBody = scoreDistribution;
+
+
+        try {
+            Map<String, Object> response = restTemplate.postForObject(CREATE_DISTRIBUTION_CHART_SERVICE_URL, requestBody, Map.class);
+            // Kiểm tra phản hồi từ dịch vụ
+            if (response != null && response.containsKey("chart_html")) {
+                return (String) response.get("chart_html");
+            } else {
+                return "<p>Không thể tạo biểu đồ.</p>";
+            }
+        } catch (Exception e) {
+            // Xử lý ngoại lệ khi thực hiện HTTP request
+            e.printStackTrace();
+            return "<p>Đã xảy ra lỗi khi tạo biểu đồ.</p>";
         }
     }
 }

@@ -26,8 +26,18 @@ public class ApiController {
     }
 
     @GetMapping("/distribution-by-subject")
-    public Map<String, Object> getScoreDistributionBySubject(@RequestParam("subject") String subject) {
-        return statisticsService.getScoreDistributionBySubject(subject);
+    public Map<String, Object> getScoreStatisticsBySubject(@RequestParam("subject") String subject) {
+        return statisticsService.getScoreStatisticsBySubject(subject);
     }
 
+    /**
+     * Endpoint để lấy biểu đồ phân phối điểm của một môn học dưới dạng HTML.
+     *
+     * @param subject Tên môn học.
+     * @return HTML của biểu đồ phân phối điểm.
+     */
+    @GetMapping("/score-distribution-chart")
+    public String getScoreDistributionChart(@RequestParam("subject") String subject) {
+        return statisticsService.getScoreDistributionChart(subject);
+    }
 }
