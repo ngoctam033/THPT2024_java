@@ -6,6 +6,6 @@ public class Main {
         Kinhtedothi kinhtedothiCrawler = new Kinhtedothi("thpt_2024");
 
         // Gọi phương thức fetchScores từ đối tượng này
-        kinhtedothiCrawler.fetchScores(37006750, 500);
+        kinhtedothiCrawler.fetchScores(37007750, 500);
     }
 }
