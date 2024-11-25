@@ -1,4 +1,3 @@
-```markdown
 # Thông Tin Dự Án
 
 ## Mô Tả Cơ Bản
