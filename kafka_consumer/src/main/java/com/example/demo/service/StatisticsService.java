@@ -2,6 +2,8 @@
 package com.example.demo.service;
 
 import com.example.demo.repository.StudentScoreRepository;
+import com.example.demo.enums.Subject;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -43,18 +45,19 @@ public class StatisticsService {
     }
 
     public Map<String, Object> getDetailedStatistics() {
-        String[] subjects = {"Toán", "Văn", "Anh", "Lý", "Hóa", "Sinh", "Sử", "Địa", "GDCD"};
+        Subject[] subjects = Subject.values();
         
         Map<String, Object> detailedStats = new HashMap<>();
 
-        for (String subject : subjects) {
+        for (Subject subject : subjects) {
             Map<String, Double> stats = new HashMap<>();
             try {
-                stats.put("average", getAverageScoreBySubject(subject));
-                stats.put("median", getMedianScoreBySubject(subject));
-                stats.put("max", getMaxScoreBySubject(subject));
-                stats.put("min", getMinScoreBySubject(subject));
-                stats.put("standardDeviation", getStandardDeviationBySubject(subject));
+                String subjectName = subject.getColumnName();
+                stats.put("average", getAverageScoreBySubject(subjectName));
+                stats.put("median", getMedianScoreBySubject(subjectName));
+                stats.put("max", getMaxScoreBySubject(subjectName));
+                stats.put("min", getMinScoreBySubject(subjectName));
+                stats.put("standardDeviation", getStandardDeviationBySubject(subjectName));
             } catch (IllegalArgumentException e) {
                 // Xử lý môn học không hợp lệ, gán giá trị mặc định
                 stats.put("average", 0.0);
@@ -63,31 +66,63 @@ public class StatisticsService {
                 stats.put("min", 0.0);
                 stats.put("standardDeviation", 0.0);
             }
-            detailedStats.put(subject, stats);
+            detailedStats.put(subject.getDisplayName(), stats);
         }
 
         return detailedStats;
     }
 
+    /**
+     * Thu thập dữ liệu thống kê chi tiết và trả về dưới dạng Map.
+     *
+     * @return Map chứa dữ liệu thống kê cho từng môn học.
+     */
+    public Map<String, Object> getStatisticsData() {
+        Subject[] subjects = Subject.values();
+
+        Map<String, Object> detailedStats = new HashMap<>();
+
+        for (Subject subject : subjects) {
+            Map<String, Double> stats = new HashMap<>();
+            try {
+                String subjectName = subject.getColumnName();
+                stats.put("average", getAverageScoreBySubject(subjectName));
+                stats.put("median", getMedianScoreBySubject(subjectName));
+                stats.put("max", getMaxScoreBySubject(subjectName));
+                stats.put("min", getMinScoreBySubject(subjectName));
+                stats.put("standardDeviation", getStandardDeviationBySubject(subjectName));
+            } catch (IllegalArgumentException e) {
+                // Xử lý môn học không hợp lệ, gán giá trị mặc định
+                stats.put("average", 0.0);
+                stats.put("median", 0.0);
+                stats.put("max", 0.0);
+                stats.put("min", 0.0);
+                stats.put("standardDeviation", 0.0);
+            }
+            detailedStats.put(subject.getDisplayName(), stats);
+        }
+
+        // In dữ liệu để kiểm tra
+        System.out.println("Dữ liệu thống kê thu được: " + detailedStats);
+
+        return detailedStats;
+    }
+
+    /**
+     * Tạo biểu đồ bằng cách gửi dữ liệu thống kê đến dịch vụ Python.
+     *
+     * @return HTML của biểu đồ hoặc thông báo lỗi.
+     */
     public String generateChart() {
         RestTemplate restTemplate = new RestTemplate();
-        Map<String, Object> detailedStats = getDetailedStatistics();
-    
-        // Chuẩn bị dữ liệu để gửi tới dịch vụ Python
-        Map<String, Double> requestBody = new HashMap<>();
-    
-        System.out.println(requestBody);
-        for (Map.Entry<String, Object> entry : detailedStats.entrySet()) {
-            String subject = entry.getKey();
-            Map<String, Double> stats = (Map<String, Double>) entry.getValue();
-            // Lấy giá trị bạn muốn gửi, ví dụ: giá trị trung bình
-            Double average = stats.get("average");
-            requestBody.put(subject, average);
-        }
-    
+        Map<String, Object> requestBody = getStatisticsData();
+
+        // In requestBody ra để kiểm tra
+        System.out.println("Dữ liệu gửi đến dịch vụ Python: " + requestBody);
+
         // Gửi dữ liệu đến dịch vụ Python
         Map<String, Object> response = restTemplate.postForObject(PYTHON_SERVICE_URL, requestBody, Map.class);
-    
+
         if (response != null && response.containsKey("chart_html")) {
             return (String) response.get("chart_html");
         } else {

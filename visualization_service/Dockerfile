@@ -9,6 +9,7 @@ RUN pip install flask plotly flask-cors watchdog
 
 ENV FLASK_APP=visualization_service.py 
 ENV FLASK_ENV=development
+ENV PYTHONUNBUFFERED=1
 
 EXPOSE 5000
 
