@@ -1,6 +1,7 @@
-# Thông tin dự án
+```markdown
+# Thông Tin Dự Án
 
-## Mô tả cơ bản
+## Mô Tả Cơ Bản
 
 Dự án này xây dựng một hệ thống thu thập, xử lý và trực quan hóa dữ liệu điểm thi THPT quốc gia năm 2024 từ nhiều nguồn báo điện tử khác nhau. Hệ thống bao gồm các thành phần chính:
 
@@ -10,21 +11,17 @@ Dự án này xây dựng một hệ thống thu thập, xử lý và trực qua
 - **PostgreSQL**: Cơ sở dữ liệu để lưu trữ dữ liệu điểm thi.
 - **Visualization Service**: Dịch vụ trực quan hóa dữ liệu, cung cấp API và giao diện để xem biểu đồ.
 
-## Thành phần chi tiết
+## Thành Phần Chi Tiết
 
 ### 1. Crawler Services
 
-Các crawler được viết bằng Java, sử dụng Maven, mỗi crawler thu thập dữ liệu từ một nguồn cụ thể:
+Các crawler được viết bằng Java, sử dụng Maven. Mỗi crawler thu thập dữ liệu từ một nguồn cụ thể:
 
-crawler_tuoitrethudo 
-
-crawler_congthuong
-
-crawler_dantri
-
-crawler_vnexpress
-
-...
+- `crawler_tuoitrethudo`
+- `crawler_congthuong`
+- `crawler_dantri`
+- `crawler_vnexpress`
+- ...
 
 Các crawler sẽ lấy dữ liệu điểm thi và gửi tới Kafka topic `thpt_2024`.
 
@@ -44,17 +41,17 @@ Cơ sở dữ liệu quan hệ để lưu trữ dữ liệu điểm thi thu th�
 
 Ứng dụng Flask (Python) sử dụng Plotly để tạo biểu đồ. Cung cấp API để hiển thị thống kê và biểu đồ liên quan đến điểm thi.
 
-## Hướng dẫn chạy dự án
+## Hướng Dẫn Chạy Dự Án
 
-### Yêu cầu hệ thống
+### Yêu Cầu Hệ Thống
 
 - **Docker** và **Docker Compose**
 - **Maven** để build các project Java
 - **Python 3.x** và các thư viện cần thiết (được cài đặt qua `requirements.txt`)
 
-### Các bước thực hiện
+### Các Bước Thực Hiện
 
-1. **Build các project con:**
+1. **Build Các Project Con:**
 
    Trong thư mục gốc của dự án, chạy lệnh sau để build tất cả các project con:
 
@@ -62,47 +59,46 @@ Cơ sở dữ liệu quan hệ để lưu trữ dữ liệu điểm thi thu th�
    build-all.bat
    ```
 
-   Nếu chỉ muốn build một dự án con, vào thưc mục dự án con chạy lệnh sau:
+   Nếu chỉ muốn build một dự án con, vào thư mục dự án con và chạy lệnh sau:
 
    ```bash
-   mvn clean install -Dskiptests
+   mvn clean install -DskipTests
    ```
 
-2. **Khởi động các dịch vụ bằng Docker Compose:**
+2. **Khởi Động Các Dịch Vụ Bằng Docker Compose:**
 
    ```bash
    docker-compose up --build -d
    ```
-  Lưu ý, khi khởi tạo Database thì sẽ tự động insert luôn dữ liệu đã được crawl trước đó
-  Nếu muốn chạy lại từ đầu với DB trống, vui lòng bỏ tùy chọn volume trong service db trong Docker-compose.xml
-3. **Kiểm tra các container đang chạy:**
+
+   **Lưu ý:**
+   
+   - Khi khởi tạo Database, dữ liệu đã được crawl trước đó sẽ tự động được insert.
+   - Nếu muốn chạy lại từ đầu với DB trống, vui lòng bỏ tùy chọn volume trong service `db` trong file `docker-compose.yml`.
+
+3. **Kiểm Tra Các Container Đang Chạy:**
 
    ```bash
    docker-compose ps
    ```
 
-4. **Truy cập dịch vụ Visualization:**
+4. **Truy Cập Dịch Vụ Visualization:**
 
-   Mở trình duyệt và truy cập vào 
+   Mở trình duyệt và truy cập vào [http://localhost:5000](http://localhost:5000) để sử dụng dịch vụ trực quan hóa.
 
-http://localhost:5000
+   **API Documentation:** Truy cập vào file `APIDoc.readme` của dự án.
 
- để sử dụng dịch vụ trực quan hóa.
- Về API document, truy cập vào APIDoc.readme của dự án
+5. **Sử Dụng API của Kafka Consumer:**
 
-5. **Sử dụng API của Kafka Consumer:**
+   Truy cập vào [http://localhost:8080](http://localhost:8080) để tương tác với API của Kafka Consumer.
 
-   Truy cập 
+   **API Documentation:** Truy cập vào file `APIDoc.readme` của dự án.
 
-http://localhost:8080
+## Liên Hệ
 
- để tương tác với API của Kafka Consumer.
- Về API document, truy cập vào APIDoc.readme của dự án
-
-## Liên hệ
-
-Nếu có thắc mắc hoặc cần hỗ trợ, vui lòng liên hệ đến nguyenngoctam0332003@gmail.com.
+Nếu có thắc mắc hoặc cần hỗ trợ, vui lòng liên hệ đến email: [nguyenngoctam0332003@gmail.com](mailto:nguyenngoctam0332003@gmail.com).
 
 ---
 
 *Lưu ý: Thông tin trong file README này mang tính chất tổng quan. Vui lòng tham khảo mã nguồn và tài liệu chi tiết trong từng thư mục con để biết thêm chi tiết về cách cấu hình và sử dụng.*
+```
