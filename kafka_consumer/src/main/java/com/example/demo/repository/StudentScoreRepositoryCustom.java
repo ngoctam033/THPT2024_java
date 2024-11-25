@@ -1,7 +1,14 @@
 // FILE: StudentScoreRepositoryCustom.java
 package com.example.demo.repository;
 
+import java.util.Map;
+import java.util.HashMap;
+
 public interface StudentScoreRepositoryCustom {
+
+    // tạo phương thức để lấy tên môn học 
+    String getSubjectName(String subject);
+
     /**
      * Tính trung vị (median) của một môn học cụ thể.
      *
@@ -40,4 +47,18 @@ public interface StudentScoreRepositoryCustom {
      * @return Giá trị độ lệch chuẩn của môn học được chỉ định.
      */
     Double findStandardDeviationBySubject(String subject);
+
+    /**
+     * Đếm tổng số sinh viên có điểm của một môn học cụ thể (không bao gồm null).
+     *
+     * @param subject Tên môn học.
+     * @return Tổng số sinh viên có điểm trong môn học được chỉ định.
+     */
+    Integer countStudentsWithScoreBySubject(String subject);
+
+    // thêm phương thức countStudentsWithScoreBelowOneBySubject để đếm số lượng học sinh có điểm dưới 1 theo môn
+    Integer countStudentsWithScoreBelowXBySubject(String subject, Double score);
+
+    // định nghĩa một hàm để tính tổng số sinh viên đạt khoảng điểm từ minScore đến maxScore với độ chia là o.25
+    Map<String, Integer> getScoreDistributionBySubject(String subject, Double step);
 }
