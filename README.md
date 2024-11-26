@@ -81,13 +81,7 @@ Cơ sở dữ liệu quan hệ để lưu trữ dữ liệu điểm thi thu th�
    docker-compose ps
    ```
 
-4. **Truy Cập Dịch Vụ Visualization:**
-
-   Mở trình duyệt và truy cập vào [http://localhost:5000](http://localhost:5000) để sử dụng dịch vụ trực quan hóa.
-
-   **API Documentation:** Truy cập vào file `APIDoc.readme` của dự án.
-
-5. **Sử Dụng API của Kafka Consumer:**
+4. **Sử Dụng API của Kafka Consumer:**
 
    Truy cập vào [http://localhost:8080](http://localhost:8080) để tương tác với API của Kafka Consumer.
 
