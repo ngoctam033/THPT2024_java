@@ -36,7 +36,7 @@ public class StudentScoreRepositoryImpl implements StudentScoreRepositoryCustom 
 
         String sql;
         if ("PERCENTILE_CONT".equals(function)) {
-            // Giả sử bạn đang sử dụng PostgreSQL
+            // sử dụng PostgreSQL
             sql = "SELECT PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY " + column + ") FROM student_scores";
         } else if ("COUNT".equals(function)) {
             sql = "SELECT COUNT(" + column + ") FROM student_scores WHERE " + column + " IS NOT NULL";

@@ -67,7 +67,7 @@ public class Saigongiaiphong {
             }
 
             try {
-                // Tạm dừng 5 giây giữa các yêu cầu
+                // Tạm dừng n giây giữa các yêu cầu
                 Thread.sleep(SLEEP_TIME_MS);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();

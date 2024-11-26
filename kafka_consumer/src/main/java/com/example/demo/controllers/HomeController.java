@@ -35,7 +35,7 @@ public class HomeController {
                 String subjectChartHtml = statisticsService.getScoreDistributionChart(subject);
                 charts.add(subjectChartHtml);
             } catch (IllegalArgumentException e) {
-                // Xử lý môn học không hợp lệ nếu cần
+                // Xử lý môn học không hợp lệ
                 charts.add("<p>Môn học không hợp lệ: " + subject + "</p>");
             }
         }

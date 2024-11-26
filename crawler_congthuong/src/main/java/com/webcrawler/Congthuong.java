@@ -68,7 +68,7 @@ public class Congthuong {
             }
 
             try {
-                // Tạm dừng 5 giây giữa mỗi lần lấy dữ liệu
+                // Tạm dừng n giây giữa mỗi lần lấy dữ liệu
                 Thread.sleep(SLEEP_TIME_MS);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
