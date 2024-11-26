@@ -15,7 +15,7 @@ CREATE TABLE student_scores (
 );
 
 -- Chèn dữ liệu từ file CSV vào bảng
-COPY student_scores (id,ngoai_ngu,dia_ly,gdcd,hoa_hoc,vat_ly,sinh_hoc,student_id,lich_su,toan,ngu_van)
+COPY student_scores (student_id,toan,ngu_van,ngoai_ngu,vat_ly,hoa_hoc,sinh_hoc,lich_su,dia_ly,gdcd)
 FROM '/docker-entrypoint-initdb.d/data.csv'
 DELIMITER ','
 CSV HEADER;
