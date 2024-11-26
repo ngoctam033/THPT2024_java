@@ -1,0 +1,12 @@
+com\example\demo\DemoApplication.class
+com\example\demo\controllers\ApiController.class
+com\example\demo\controllers\HomeController.class
+com\example\demo\consumer\KafkaConsumerService.class
+com\example\demo\enums\Subject.class
+com\example\demo\config\KafkaConsumerConfig.class
+com\example\demo\repository\StudentScoreRepository.class
+com\example\demo\entity\StudentScore.class
+com\example\demo\repository\StudentScoreRepositoryCustom.class
+com\example\demo\service\StatisticsService.class
+com\example\demo\repository\StudentScoreRepositoryImpl.class
+com\example\demo\model\ModelScore.class

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard Điểm Thi</title>
+    <!-- Liên kết tới styles.css -->
+    <link rel="stylesheet" href="/css/base.css">
+
+    <!-- Liên kết tới scripts.js nếu cần -->
+    <script src="/js/scripts.js"></script>
+
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <h1>Điểm Trung Bình Các Môn Học</h1>
+    <div id="chart-container" th:utext="${chartHtml}">
+        <p>Đang tải biểu đồ...</p>
+    </div>
+    
+    <h1>Biểu Đồ Phân Phối Điểm Các Môn Học</h1>
+    <div class="chart-grid">
+        <div class="chart-item" th:each="chartHtml : ${charts}" th:utext="${chartHtml}">
+            <p>Đang tải biểu đồ...</p>
+        </div>
+    </div>
+</body>
+</html>
